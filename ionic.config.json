@@ -1,0 +1,7 @@
+{
+  "name": "give-weather-2u",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
