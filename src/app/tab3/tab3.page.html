@@ -1,17 +1,50 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    <ion-title>Nastavení</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
+      <ion-title size="large">Nastavení</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-input
+    [(ngModel)]="lokace"
+    label="Lokace"
+    label-placement="floating"
+    fill="solid"
+    placeholder="Enter text"
+  ></ion-input>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <ion-button expand="block" >Hledej</ion-button>
+
+  <ion-card *ngIf="weatherMsg">
+    <ion-card-header>
+      <ion-card-title>{{ weatherMsg.location.name }}</ion-card-title>
+      <ion-card-subtitle>{{ weatherMsg.location.region}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content> Teplota: {{ weatherMsg.current.temp_c}} °C </ion-card-content>
+    <ion-button expand="full" (click)="favoritesService.addCity(weatherMsg.location.name, weatherMsg.location.region)">
+      Přidat do oblíbených
+    </ion-button>
+  </ion-card>
+  <ion-list>
+    <ion-list-header>Uložené</ion-list-header>
+
+    <ion-card *ngFor="let lokace of oblibeneLokace" (click)="weatherService.goToDetail(lokace.name, lokace.region)">
+      <ion-card-header>
+        <ion-card-title>{{ lokace.name }}</ion-card-title>
+        <ion-card-subtitle>{{ lokace.region }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content> 
+      
+    </ion-card-content>
+    <ion-button  color="danger"   (click)="favoritesService.removeCity(lokace.name, lokace.region); $event.stopPropagation();">
+      <ion-icon name="trash"></ion-icon>
+    </ion-button>
+    </ion-card>
+
+  </ion-list>
 </ion-content>

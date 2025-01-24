@@ -8,10 +8,36 @@ import { environment } from "src/environments/environment";
 
 export class WeatherService {
 
+  weatherMsg?: WeatherMessage;
+  lang: string = "cs";
+
   constructor() { }
+
+  goToDetail(name: string, region: string) {
+    throw new Error('Method not implemented.');
+  }
+
+  async searchClicked(lokace:string) {
+
+    this.weatherMsg = await this.fetchCurrentInfo(lokace, this.lang);
+  }
+
+  async searchSaved(lokace:string) {
+    this.weatherMsg = await this.fetchCurrentInfo(
+      lokace, this.lang
+    );
+  }
 
   async fetchCurrentInfo(location: string, lang: string): Promise<WeatherMessage> {
     const url = `${environment.baseUrl}/current.json?key=${environment.apiKey}&q=${location}&lang=${lang}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
+
+  async fetchCurrentInfoSaved(location: string,region: string, lang: string): Promise<WeatherMessage> {
+    const url = `${environment.baseUrl}/current.json?key=${environment.apiKey}&q=${location},${region}&lang=${lang}`;
     const response = await fetch(url);
     const data = await response.json();
     console.log(data);

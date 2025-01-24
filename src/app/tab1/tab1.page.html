@@ -1,33 +1,60 @@
 
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Tab 1 </ion-title>
+    <ion-title>Oblíbené počasí</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
+      <ion-title size="large">Oblíbené</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-input
-    [(ngModel)]="lokace"
+    [(ngModel)]="searchValue"
     label="Lokace"
     label-placement="floating"
     fill="solid"
     placeholder="Enter text"
   ></ion-input>
 
-  <ion-button expand="block" (click)="searchClicked()">Hledej</ion-button>
+  <ion-button expand="block" (click)="doSearch()">Hledej</ion-button>
 
-  <ion-card *ngIf="weatherMsg">
+  <ion-card *ngIf="weatherService.weatherMsg">
     <ion-card-header>
-      <ion-card-title>{{ weatherMsg.location.name }}</ion-card-title>
-      <ion-card-subtitle>{{ weatherMsg.location.region}}</ion-card-subtitle>
+      <ion-card-title>{{ weatherService.weatherMsg.location.name }}</ion-card-title>
+      <ion-card-subtitle>{{ weatherService.weatherMsg.location.region}}</ion-card-subtitle>
     </ion-card-header>
-
-    <ion-card-content> Teplota v C: {{ weatherMsg.current.temp_c}} </ion-card-content>
+    <ion-card-content> Teplota: {{ weatherService.weatherMsg.current.temp_c}} °C </ion-card-content>
+    <ion-button expand="full" (click)="favoritesService.addCity(weatherService.weatherMsg.location.name, weatherService.weatherMsg.location.region)">
+      Přidat do oblíbených
+    </ion-button>
   </ion-card>
+  <ion-list>
+    <ion-list-header>Uložené</ion-list-header>
+  
+    <ion-card 
+      *ngFor="let lokace of favoritesService.oblibeneLokace" 
+      (click)="weatherService.goToDetail(lokace.name, lokace.region)">
+      <ion-card-header>
+        <ion-card-title>{{ lokace.name }}</ion-card-title>
+        <ion-card-subtitle>{{ lokace.region }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- Přidáš řádek pro aktuální teplotu -->
+        <div *ngIf="lokace.currentTemp !== undefined">
+          Aktuální teplota: {{ lokace.currentTemp }} °C
+        </div>
+        <div *ngIf="lokace.currentTemp === undefined">
+          Načítám teplotu...
+        </div>
+      </ion-card-content>
+      <ion-button color="danger" (click)="favoritesService.removeCity(lokace.name, lokace.region); $event.stopPropagation();">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-card>
+  
+  </ion-list>
 </ion-content>

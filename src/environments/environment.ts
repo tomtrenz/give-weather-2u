@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiKey:'', // Put your actual key here
+  apiKey:'52e2c7eeb0f444d0b80234239251201', // Put your actual key here
   baseUrl:'http://api.weatherapi.com/v1/'
 };
 
