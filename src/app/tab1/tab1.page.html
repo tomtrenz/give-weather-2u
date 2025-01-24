@@ -1,17 +1,33 @@
+
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
+    <ion-title> Tab 1 </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Tab 1</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-input
+    [(ngModel)]="lokace"
+    label="Lokace"
+    label-placement="floating"
+    fill="solid"
+    placeholder="Enter text"
+  ></ion-input>
+
+  <ion-button expand="block" (click)="searchClicked()">Hledej</ion-button>
+
+  <ion-card *ngIf="weatherMsg">
+    <ion-card-header>
+      <ion-card-title>{{ weatherMsg.location.name }}</ion-card-title>
+      <ion-card-subtitle>{{ weatherMsg.location.region}}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content> Teplota v C: {{ weatherMsg.current.temp_c}} </ion-card-content>
+  </ion-card>
 </ion-content>
